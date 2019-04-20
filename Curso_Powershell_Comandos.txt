@@ -1,0 +1,190 @@
+Curso de Powershell Udemy
+
+O windows powershell é um shell de linha de comando do Windows
+
+CLI - Command Line Interface - Powershell comum. 
+
+ISE - Integrated Scripting Environment  - Powershell Grafico, ambiente de programação.
+
+COMANDOS:
+
+O powershell também executa os comandos do CMD(DOS).
+CD.. : Retorna um diretório atras no caminho
+
+cd / : Retorna para pasta no caminho
+
+dir: lista todos os diretórios presentes no caminho
+
+ls: lista todos os diretórios presentes no caminho
+
+cls: apaga os registros
+
+get-childitem: Mostra todas as pastas e arquivo presentes na pasta marcada.
+
+Get-Host : Traz informações do Host
+
+(get-host).Version : Traz a versão do host onde o comando foi executado
+
+$PSVersionTable.PSVersion
+
+Get-Command : Mostra todos os comandos dos Powershell
+
+write-host: Permite mostra uma informação para o usuário.
+
+update-help: faz uma atualização do banco de dados com as informações
+
+CMDLETS: São os comandos especiais utilizados em powershell e que se baseiam em um padrão de verbo+substantivo
+
+Get-Command -CommandType Cmdlet : traz uma lista de todos os cmdlets do powershell
+
+Get-Help : Traz um help de qualquer cmdlet especificado.
+
+get-help write-host: Traz informações sobre o cmdlet Write-host
+
+get-help write-host -examples : Ao adicionar a extensão "-examples", trará um help do cmdlet especficado com exemplos de sua utilização.
+
+get-help write-host -online : Traz ajuda e exemplo de forma online no site da microsoft sobre o cmdlet especificado.
+
+get-date: Traz informações sobre a data e horario da maquina onde o cmdlet foi executado.
+
+get-help get-date -showwindow: Mostra um help do cmdlet informado em uma janela separada do powershell mesmo estando sem internet.
+
+Cmdlets 
+
+- Uma pequena unidade de funcionalidade relacionada a um conjunto de recursos
+get-command -commandtype cmdlet
+
+Funções
+
+-Podem fazer o mesmo que cmdlets
+get-command -commandtype function
+
+
+Alias
+
+- São como um apelidos para os cmdlets e funções
+
+get-command -commandtype alias 
+
+get-command - commandttype cmlets | more : Ao colocar o parametro " |more" o powershell apresenta as informações de forma pausada na tela. podendo usar outros parametros
+(type, por exemplo).
+
+get-command -CommandType cmdlet *eventlog* : Ao deixar uma informação entre asteriscos, eu pesquiso apenas os cmdlets referente o que foi colocado, no caso o eventlog
+
+clear-host: Comando para limpar a tela do powershell
+
+Get-process: traz todos os processos ocorrendo na maquina.
+
+
+Set alias: Comando para criar um novo apelido para comando ou função
+
+Redirecionadores
+
+get-process | format-list : Deixa todos a informações em formato de lista.
+
+get-process | format-list | more: Apresenta os processos em formato de lista e de maneira pausada.
+
+get-process | Convertto-html | out-file "Processos.html": Mostra os processos em forma de arquivo html, primeiro convertendo para extensão html e depois criando o arquivo
+Processos.html
+
+dir > .\lista.txt : Cria ou sobrescreve ( se o arquivo ja estiver criado) a informação que vai ser encaminhada, no caso, a lista de diretório.
+
+get-date > .\lista.txt: Cria ou sobrescreve ( se o arquivo ja estiver criado) a informação que vai ser encaminhada, no caso, as informações de data e hora.
+
+get-date >> .\lista.txt : Acrescenta as informações no arquivo ja criado.
+
+update-help 2> erro.log : O parametro "2>" encaminha o erro para o arquivo informado, se o arquivo ja estiver criado, ele sobrescreve o erro ou informação contido. No
+caso, se o comando "update-help" gerar algum erro, ele encaminhará ou criará o arquivo erro.log e colocará as informações nele.
+
+update-help 2>> erro.log : O parametro "2>>" encaminha e adicionar o erro ao arquivo ja existente, não sobrescrevendo, mas adicionando.
+
+get-process |Out-GridView : Mostra os processo na forma de grade, recurso do powershell
+
+Usando Where-Object
+
+get-service | Where-Object {$_.Status -eq "Running"} : No caso, o comando mostra todos os serviços rodando, o "Where-object" funciona como especie de atribuir uma condição
+ao programa comando informado (get-service), o "-eq" é igual equivalente ou igual, então, eu to pedindo pra mostrar os serviços (get-service) que (where-object) que o seu
+status seja igual (-eq) à running.
+
+Módulos
+
+
+get-module -ListAvailable - Lista todos os módulos disponíveis no Powershell
+
+get-command -Module SmbShare : Lista todas as funções relacionadas a um modulo, no caso o SMBSHARE.
+
+Get-SmbShare: Mostra o compartilhamentos que tenho na minha maquina.
+
+
+Select-String
+
+Get-Content: Permite ver o que tem dentro de determinado arquivo.
+
+get-content .\lista.txt | select-string Running: Mostra primeiramente as informações dentro do arquivo Lista.txt, ao adicionar o parametro Select-String, ele mostra a
+informação especificada, no caso "Running".
+
+Get-ChildItem .\*.txt | Select-String -Pattern Dsm: O commando Select-String pode ser usado fora do arquivo também, no caso, utilizei o comando Get-ChildItem mostra 
+arquivo com a informação que especifiquei, no exemplo, irá mostrar todos os arquivos .txt dentro do diretório e ao colocar o Select-String -Pattern Dsm, irá mostra a
+informação com Dsm em todos os arquivos txt dentro do diretório. 
+
+Select-String -Path "lista.txt" -Pattern guest: Mostra a informação com guest dentro do arquivo lista.txt
+
+Select-String -Path "lista.txt" -Pattern Ad -NotMatch: Nesse caso ele mostrará todas as informações sem Ad no arquivo lista.txt
+
+Expressões Regulares-REGEX
+
+get-content .\lista.txt | Select-String -Pattern '\d.\d.\d.\d': O Barra \d em Regex representa caracteres alfa numérico, como em CPF, no caso, ele mostra informação
+dentro da lista.txt que está naquele formato.
+
+Looping
+
+For:inicio; condição; próximo valor) {Códiogo de Repetiçãao}
+
+ForEach:($variavel e items da coleção) {Código de Execução}
+
+While: (Condição) {Código de execução}
+
+Funções
+
+São comandos em um script, que dura apenas durante a sessão em que estiver sendo executado
+-Longos comandos
+-Tarefas repetitivas
+-Uso de parâmetros
+
+WorkFlows
+
+-Criação de scripts de longa execução gerenciáveis
+-Usando WorkFlow você pode:
+ .Interromper
+ .Suspender
+ .Reiniciar
+ .Repetir
+ .Execução Paralela
+
+Job e Scheduled Jobs
+
+Jobs - Permitem a execução de comandos em Background no computador local ou remoto.
+
+Start-Job: Inicia um trabalho.
+Get-Job: Exibe os trabalhos associados a atual sessão.
+Wait-Job: Aguarda pelo trabalho até que esteja pronto.
+Receive-Job: Exibe o resultado de um trabalho em background.
+Stop-Job: Para um trabalho.
+Remove-Job:Remove um trabalho.
+
+Scheduled-Jobs: Trabalhos agendados são extremamente uteis quando você tem tarefas que são executadas com maior frequência ou com recorrência e principalmente quando
+são atividade de longa duração.
+
+Get-Command -Module PSScheduledJob | Sort-Object Noum
+
+Get-ScheduledJob Backup | Unregister-ScheduledJob
+
+WScriptShell
+
+Você pode usar New-Object para trabalhar com componentes COM(Component Object Model). Os componentes variam desde as várias bibliotecas incluídas no WSH(Windows Script
+Host) até aplicativos de ActiveX como Internet-Explorer que estão instalados na maioria dos sistemas.
+
+New-Object -ComObject WScript.Shell
+New-Object -ComObject WScript.Network
+New-Object -ComObject Scripting.Dictionary
+New-Object -ComObject Scripting.FileSystemObject
